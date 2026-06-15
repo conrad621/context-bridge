@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Context Bridge 是一个本地优先的编码 Agent 会话桥接工具，用于在 Claude Code、Codex 和 MCP 工具之间迁移、复制和同步会话上下文。"
+    />
+    <title>Context Bridge - 跨 Agent 会话上下文桥接</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar" aria-label="主导航">
+      <a class="brand" href="#top" aria-label="Context Bridge 首页">
+        <span class="brand-mark" aria-hidden="true">CB</span>
+        <span>Context Bridge</span>
+      </a>
+      <nav class="nav-links" aria-label="页面导航">
+        <a href="#pain">痛点</a>
+        <a href="#workflow">工作流</a>
+        <a href="#cases">案例</a>
+        <a href="#guide">引导</a>
+        <a href="#features">能力</a>
+        <a href="#commands">命令</a>
+        <a href="https://www.npmjs.com/package/@mmmjk/context-bridge">npm</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Local-first session bridge</p>
+          <h1 id="hero-title">跨编码 Agent 无缝迁移会话上下文。</h1>
+          <p class="hero-lede">
+            Context Bridge 在 Claude Code、Codex 和 MCP 工具之间转换 JSONL 会话历史，
+            保留足够的操作轨迹，让你换工具时不用丢掉上下文。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#install">开始使用</a>
+            <a class="button ghost" href="https://www.npmjs.com/package/@mmmjk/context-bridge">查看 npm</a>
+          </div>
+        </div>
+
+        <div class="session-panel" aria-label="会话转换示意">
+          <div class="panel-header">
+            <span class="dot red"></span>
+            <span class="dot amber"></span>
+            <span class="dot green"></span>
+            <span class="panel-title">context-bridge translate</span>
+          </div>
+          <div class="trace">
+            <div class="trace-row source">
+              <span>Claude Code JSONL</span>
+              <strong>ingest</strong>
+            </div>
+            <div class="trace-rail" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="trace-row core">
+              <span>Canonical Session</span>
+              <strong>normalize</strong>
+            </div>
+            <div class="trace-rail" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="trace-row target">
+              <span>Codex JSONL</span>
+              <strong>render</strong>
+            </div>
+          </div>
+          <pre><code>$ ctxb translate &lt;session-id&gt;
+created target session
+resume: codex resume ...</code></pre>
+        </div>
+      </section>
+
+      <section class="proof-strip" aria-label="核心特性">
+        <div>
+          <strong>本地优先</strong>
+          <span>不依赖托管服务</span>
+        </div>
+        <div>
+          <strong>双向转换</strong>
+          <span>Claude Code 与 Codex</span>
+        </div>
+        <div>
+          <strong>MCP 可调用</strong>
+          <span>结构化 session 工具</span>
+        </div>
+      </section>
+
+      <section id="workflow" class="section split">
+        <div>
+          <p class="eyebrow">Why it matters</p>
+          <h2>会话不是聊天记录，而是工作现场。</h2>
+        </div>
+        <p class="section-lede">
+          编码 Agent 的 session 里包含用户意图、工具调用、shell 命令、文件操作、工作目录、
+          时间戳和标题。Context Bridge 把这些轨迹规范化成统一模型，再渲染到目标工具可以恢复的格式。
+        </p>
+      </section>
+
+      <section id="pain" class="pain-section">
+        <div class="pain-lead">
+          <p class="eyebrow">Pain points</p>
+          <h2>多 Agent 工作流最痛的，不是启动新工具。</h2>
+          <p>
+            真正的损耗发生在切换之后：上下文散了、轨迹断了、重复解释开始了。
+            Context Bridge 处理的是这段隐形成本。
+          </p>
+        </div>
+        <div class="pain-grid" aria-label="项目痛点">
+          <article>
+            <span>Lost context</span>
+            <h3>上下文被锁在各自格式里</h3>
+            <p>Claude Code 和 Codex 都记录 JSONL，但结构不同。换工具时，历史通常只能靠复制摘要。</p>
+          </article>
+          <article>
+            <span>Broken trace</span>
+            <h3>工具调用和文件操作很难带走</h3>
+            <p>一次真实编码会话包含 shell、patch、读写文件、工作目录和错误输出，纯聊天导出不够恢复现场。</p>
+          </article>
+          <article>
+            <span>Manual handoff</span>
+            <h3>交接靠人工整理，越久越不可靠</h3>
+            <p>长任务、跨天任务、多人协作时，手写 handoff 容易漏掉关键命令和决策路径。</p>
+          </article>
+          <article>
+            <span>Sync loops</span>
+            <h3>自动同步容易生成重复链</h3>
+            <p>如果不知道哪些 session 是生成物，批量同步会把迁移产物再次迁移，污染本地历史。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="flows" aria-label="三种使用路径">
+        <article>
+          <span class="number">01</span>
+          <h3>Translate</h3>
+          <p>生成带来源标记的迁移 session，后续可清理、去重，并避免被再次链式同步。</p>
+        </article>
+        <article>
+          <span class="number">02</span>
+          <h3>Copy</h3>
+          <p>一次性复制成新的目标 Agent session，不写入同步追踪元数据，表现更接近原生会话。</p>
+        </article>
+        <article>
+          <span class="number">03</span>
+          <h3>Sync / Watch</h3>
+          <p>扫描最近原生 session，按方向批量生成确定性目标 session，适合长期双工具工作流。</p>
+        </article>
+      </section>
+
+      <section id="features" class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Capabilities</p>
+          <h2>为跨 Agent 工作流准备的基础设施。</h2>
+        </div>
+        <div class="feature-grid">
+          <article>
+            <h3>Canonical IR</h3>
+            <p>把不同 harness 的事件规范化成统一 Session 模型，减少格式耦合。</p>
+          </article>
+          <article>
+            <h3>Adapter Boundary</h3>
+            <p>Claude Code 和 Codex 各自维护 ingest/render 逻辑，转换路径清晰可扩展。</p>
+          </article>
+          <article>
+            <h3>Provenance-aware Sync</h3>
+            <p>生成 session 可识别、可跳过、可清理，避免同步循环和重复链路。</p>
+          </article>
+          <article>
+            <h3>Session Index</h3>
+            <p>跨 harness 列出、查看和筛选本地 session，快速找到要迁移的上下文。</p>
+          </article>
+          <article>
+            <h3>Hook Integration</h3>
+            <p>支持 Claude Code Stop hook 与 Codex notify hook，轻量触发自动同步。</p>
+          </article>
+          <article>
+            <h3>MCP Server</h3>
+            <p>通过 stdio 暴露 session 查询、转换和恢复命令准备能力。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="cases" class="case-section">
+        <div class="section-heading">
+          <p class="eyebrow">Case tours</p>
+          <h2>更具体的使用场景，一眼看懂它该放在哪里。</h2>
+        </div>
+        <div class="case-list">
+          <article>
+            <div class="case-tag">Case 01</div>
+            <h3>长任务做到一半，换 Agent 继续收尾</h3>
+            <p>
+              你已经在 Claude Code 里完成需求理解、文件搜索、局部实现和几轮测试，但后半段想交给 Codex
+              做类型错误修复、测试补齐或最终验证。此时不需要重新解释项目背景，直接把当前 session 转过去。
+            </p>
+            <pre><code>ctxb list --harness claude-code
+ctxb smoke &lt;session-id&gt;
+ctxb translate &lt;session-id&gt; --to codex</code></pre>
+          </article>
+          <article>
+            <div class="case-tag">Case 02</div>
+            <h3>复用一次高质量调研，但不建立同步关系</h3>
+            <p>
+              某次会话里已经沉淀了架构约束、关键文件、风险点和命令结果。你只想让另一个 Agent 从这里开始，
+              但不希望它被后续 clean/dedupe 当成生成物处理。使用 copy 创建独立的新会话。
+            </p>
+            <pre><code>ctxb copy &lt;session-id&gt;
+
+# no provenance markers
+# fresh target session id</code></pre>
+          </article>
+          <article>
+            <div class="case-tag">Case 03</div>
+            <h3>每天在两个 CLI Agent 之间切换</h3>
+            <p>
+              白天用一个 Agent 快速执行，晚上用另一个 Agent 做审查、总结或继续实现。sync/watch 会扫描最近原生
+              session，并用 fingerprint 和来源标记避免重复生成与链式迁移。
+            </p>
+            <pre><code>ctxb sync --direction both --days 14
+ctxb watch --direction both --days 1 -i 30</code></pre>
+          </article>
+          <article>
+            <div class="case-tag">Case 04</div>
+            <h3>把 session 能力交给 MCP 自动化工具</h3>
+            <p>
+              MCP host、桌面自动化或本地编排工具不应该硬编码 Claude Code/Codex 的 session 路径。
+              通过 MCP server，它们可以列出会话、触发转换，并拿到可执行的恢复命令。
+            </p>
+            <pre><code>ctxb mcp config-snippet
+ctxb mcp serve</code></pre>
+          </article>
+          <article>
+            <div class="case-tag">Case 05</div>
+            <h3>发布前保留可追溯的审查链路</h3>
+            <p>
+              一个 Agent 完成实现后，另一个 Agent 负责 code review、风险复核和验收记录。translate 生成的目标
+              session 带来源元数据，后续能识别它来自哪次原始工作，而不是混进普通本地历史。
+            </p>
+            <pre><code>ctxb inspect &lt;source-session&gt;
+ctxb translate &lt;source-session&gt;
+ctxb inspect &lt;target-session&gt;</code></pre>
+          </article>
+          <article>
+            <div class="case-tag">Case 06</div>
+            <h3>清理迁移产物，保持本地历史干净</h3>
+            <p>
+              试过几次迁移、同步或 watch 后，本地可能产生多份目标 session。因为生成物带有来源标记，
+              clean 和 dedupe 可以先 dry-run，再删除可确认的迁移产物。
+            </p>
+            <pre><code>ctxb clean --dry-run
+ctxb dedupe --dry-run
+
+# rerun without --dry-run when ready</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section id="guide" class="guide-section">
+        <div class="guide-heading">
+          <div>
+            <p class="eyebrow">Usage guide</p>
+            <h2>第一次使用，从保守路径开始。</h2>
+          </div>
+          <p>
+            推荐先列出会话，再 smoke 预检转换结果。确认恢复命令和目标方向都正确后，
+            再执行 translate、copy 或 sync。
+          </p>
+        </div>
+        <div class="guide-body">
+          <ol class="guide-steps">
+            <li>
+              <span>01</span>
+              <div>
+                <h3>安装 CLI</h3>
+                <p>全局安装后同时获得 <code>context-bridge</code> 和短别名 <code>ctxb</code>。</p>
+                <pre><code>npm install -g @mmmjk/context-bridge
+ctxb --help</code></pre>
+              </div>
+            </li>
+            <li>
+              <span>02</span>
+              <div>
+                <h3>找到要迁移的 session</h3>
+                <p>先用较短时间窗口浏览最近会话，必要时再扩大 <code>--days</code>。</p>
+                <pre><code>ctxb list --harness both --days 7 -n 20
+ctxb inspect &lt;session-id&gt;</code></pre>
+              </div>
+            </li>
+            <li>
+              <span>03</span>
+              <div>
+                <h3>先做 smoke 预检</h3>
+                <p>smoke 会验证转换并打印恢复命令，不执行真实模型，也不需要立即切换工具。</p>
+                <pre><code>ctxb smoke &lt;session-id&gt;
+ctxb smoke &lt;session-id&gt; --to codex</code></pre>
+              </div>
+            </li>
+            <li>
+              <span>04</span>
+              <div>
+                <h3>选择迁移、复制或同步</h3>
+                <p>需要可追踪迁移用 translate；需要干净独立起点用 copy；需要长期镜像用 sync/watch。</p>
+                <pre><code>ctxb translate &lt;session-id&gt;
+ctxb copy &lt;session-id&gt;
+ctxb sync --direction both --days 14</code></pre>
+              </div>
+            </li>
+            <li>
+              <span>05</span>
+              <div>
+                <h3>执行输出的 resume 命令</h3>
+                <p>translate 会输出目标 Agent 的恢复命令。把提示词替换成下一步任务即可继续工作。</p>
+                <pre><code># printed by translate
+codex resume ... "&lt;your next prompt&gt;"</code></pre>
+              </div>
+            </li>
+          </ol>
+          <aside class="guide-notes" aria-label="使用建议">
+            <h3>选择建议</h3>
+            <dl>
+              <div>
+                <dt>想保留来源关系</dt>
+                <dd>用 <code>translate</code>。生成物会被标记，便于清理、去重和避免循环。</dd>
+              </div>
+              <div>
+                <dt>只想复制一次</dt>
+                <dd>用 <code>copy</code>。它不写追踪元数据，更适合作为新的原生起点。</dd>
+              </div>
+              <div>
+                <dt>想自动镜像最近会话</dt>
+                <dd>用 <code>sync</code> 或 <code>watch</code>，并从较短 <code>--days</code> 开始。</dd>
+              </div>
+              <div>
+                <dt>担心污染本地历史</dt>
+                <dd>先跑 <code>clean --dry-run</code> 和 <code>dedupe --dry-run</code> 查看会删什么。</dd>
+              </div>
+            </dl>
+          </aside>
+        </div>
+      </section>
+
+      <section id="commands" class="command-section">
+        <div class="command-copy">
+          <p class="eyebrow">CLI first</p>
+          <h2>几个命令，把上下文带到下一个工具。</h2>
+          <p>
+            主命令是 <code>context-bridge</code>，同时提供更短的 <code>ctxb</code> 别名。
+            所有核心能力都围绕本地文件读写完成。
+          </p>
+        </div>
+        <div class="command-tabs" data-tabs>
+          <div class="tab-list" role="tablist" aria-label="命令示例">
+            <button type="button" class="active" role="tab" aria-selected="true" data-tab="move">迁移</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="copy">复制</button>
+            <button type="button" role="tab" aria-selected="false" data-tab="sync">同步</button>
+          </div>
+          <pre data-panel="move"><code>ctxb list --harness both --days 30 -n 20
+ctxb inspect &lt;session-id&gt;
+ctxb smoke &lt;session-id&gt;
+ctxb translate &lt;session-id&gt;</code></pre>
+          <pre hidden data-panel="copy"><code>ctxb copy &lt;session-id&gt;
+
+# fresh target session
+# no sync tracking metadata</code></pre>
+          <pre hidden data-panel="sync"><code>ctxb sync --direction both --days 365
+ctxb watch --direction both --days 1 -i 30</code></pre>
+        </div>
+      </section>
+
+      <section id="install" class="install">
+        <div>
+          <p class="eyebrow">Install</p>
+          <h2>从 npm 安装。</h2>
+        </div>
+        <pre><code>npm install -g @mmmjk/context-bridge
+context-bridge --help
+ctxb --help</code></pre>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>Context Bridge</span>
+      <a href="https://github.com/conrad621/context-bridge">github.com/conrad621/context-bridge</a>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,15 @@
+src/
+tests/
+scripts/
+docs/
+node_modules/
+.idea/
+.omc/
+.omx/
+data/
+*.tgz
+*.log
+.env
+.env.local
+tsconfig.json
+package-lock.json

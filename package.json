@@ -1,0 +1,56 @@
+{
+  "name": "@mmmjk/context-bridge",
+  "version": "0.1.1",
+  "description": "Local-first session bridge to translate, copy, and sync coding-agent histories across Claude Code, Codex, and MCP tools.",
+  "type": "module",
+  "homepage": "https://conrad621.github.io/context-bridge/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/conrad621/context-bridge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/conrad621/context-bridge/issues"
+  },
+  "bin": {
+    "context-bridge": "dist/src/cli.js",
+    "ctxb": "dist/src/cli.js"
+  },
+  "files": [
+    "dist/src/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node scripts/run-tests.mjs",
+    "test:unit": "npm run build && node --test",
+    "prepack": "npm run build",
+    "pack:dry": "npm pack --dry-run",
+    "publish:dry": "npm publish --dry-run --access public"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "agent-session",
+    "session",
+    "resume",
+    "translator",
+    "migration",
+    "claude-code",
+    "codex",
+    "mcp",
+    "cli"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "typescript": "^5.8.0"
+  }
+}
