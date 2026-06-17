@@ -106,12 +106,39 @@ pre,
   justify-content: flex-end;
   gap: 0.25rem 1rem;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   text-transform: uppercase;
 }
 
 .nav-links a:hover {
   color: var(--ink);
+}
+
+.language-switch {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(2.8rem, auto));
+  padding: 0.2rem;
+  border: 1px solid rgba(23, 33, 31, 0.16);
+  background: rgba(255, 253, 247, 0.48);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+.language-switch button {
+  min-height: 2rem;
+  padding: 0.35rem 0.65rem;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.language-switch button.active {
+  background: var(--ink);
+  color: var(--white);
 }
 
 main {
@@ -146,9 +173,18 @@ p {
 h1 {
   max-width: 14ch;
   margin: 0;
-  font-size: clamp(3.4rem, 8.2vw, 7.4rem);
-  line-height: 0.92;
+  font-size: clamp(3rem, 7vw, 6.2rem);
+  line-height: 0.96;
   letter-spacing: 0;
+}
+
+html[lang="en"] h1 {
+  max-width: 15ch;
+  font-size: clamp(2.85rem, 6.2vw, 5.65rem);
+}
+
+html[lang="en"] .hero-lede {
+  max-width: 35rem;
 }
 
 h2 {
@@ -166,9 +202,18 @@ h3 {
 
 .hero-lede,
 .section-lede,
-.command-copy p {
+.command-copy p,
+.pain-lead p,
+.pain-grid p,
+.flows p,
+.feature-grid p,
+.case-list p,
+.guide-heading p:last-child,
+.guide-steps p,
+.guide-notes dd {
   color: var(--muted);
-  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  font-size: clamp(1.02rem, 1.35vw, 1.24rem);
   line-height: 1.7;
 }
 
@@ -375,12 +420,6 @@ pre {
     rgba(255, 253, 247, 0.36);
 }
 
-.pain-lead p {
-  color: var(--muted);
-  font-size: clamp(1rem, 1.25vw, 1.18rem);
-  line-height: 1.68;
-}
-
 .pain-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -438,7 +477,6 @@ pre {
 
 .flows p,
 .feature-grid p {
-  color: var(--muted);
   line-height: 1.62;
 }
 
@@ -488,11 +526,6 @@ pre {
   background: rgba(246, 242, 232, 0.92);
 }
 
-.case-list p {
-  color: var(--muted);
-  line-height: 1.68;
-}
-
 .case-list pre {
   margin-top: 1.5rem;
   padding: 1rem;
@@ -518,7 +551,6 @@ pre {
 
 .guide-heading p:last-child {
   margin: 0;
-  color: var(--muted);
   font-size: clamp(1rem, 1.28vw, 1.18rem);
   line-height: 1.68;
 }
@@ -567,7 +599,6 @@ pre {
 
 .guide-steps p {
   margin: 0;
-  color: var(--muted);
   line-height: 1.62;
 }
 
@@ -737,13 +768,23 @@ pre {
     justify-content: flex-start;
   }
 
+  .language-switch {
+    width: 100%;
+    max-width: 13rem;
+  }
+
   .hero {
     min-height: auto;
     padding-top: 2.4rem;
   }
 
   h1 {
-    font-size: clamp(3.25rem, 18vw, 5rem);
+    font-size: clamp(2.75rem, 15vw, 4.4rem);
+  }
+
+  html[lang="en"] h1 {
+    max-width: 12ch;
+    font-size: clamp(2.35rem, 12vw, 3.75rem);
   }
 
   h2 {

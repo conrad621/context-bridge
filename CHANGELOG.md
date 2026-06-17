@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.2
+
+- Updated the docs site to support English and Chinese with persisted language preference.
+- Refreshed the homepage language and typography, including a clearer English hero section.
+- Updated project website links to `https://conrad621.github.io/context-bridge`.
+
 ## 0.1.0
 
 - Added Claude Code <-> Codex session translation.

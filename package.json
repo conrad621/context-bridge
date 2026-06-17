@@ -1,9 +1,9 @@
 {
   "name": "@mmmjk/context-bridge",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Local-first session bridge to translate, copy, and sync coding-agent histories across Claude Code, Codex, and MCP tools.",
   "type": "module",
-  "homepage": "https://conrad621.github.io/context-bridge/",
+  "homepage": "https://conrad621.github.io/context-bridge",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/conrad621/context-bridge.git"

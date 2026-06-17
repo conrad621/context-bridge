@@ -2,7 +2,7 @@
 
 **语言：** [English](https://github.com/conrad621/context-bridge/blob/master/README.md) | 简体中文
 
-**项目网站：** https://conrad621.github.io/context-bridge/  
+**项目网站：** https://conrad621.github.io/context-bridge
 **项目地址：** https://github.com/conrad621/context-bridge
 
 Context Bridge 是一个本地优先的编码代理会话互操作层。它通过统一的 canonical intermediate representation，在 Claude Code、Codex 和支持 MCP 的自动化工具之间迁移 JSONL 会话历史，并尽量保留跨 agent 恢复工作所需的操作上下文。

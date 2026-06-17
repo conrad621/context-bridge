@@ -2,7 +2,7 @@
 
 **Language:** English | [简体中文](https://github.com/conrad621/context-bridge/blob/master/README.zh-CN.md)
 
-**Website:** https://conrad621.github.io/context-bridge/  
+**Website:** https://conrad621.github.io/context-bridge
 **Repository:** https://github.com/conrad621/context-bridge
 
 Context Bridge is a local-first session interoperability layer for coding agents. It moves JSONL session history between Claude Code, Codex, and MCP-aware automation surfaces through a canonical intermediate representation, preserving enough operational context to resume work across harness boundaries.
